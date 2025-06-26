@@ -6,8 +6,8 @@
 		<meta name="generator" content="Hostinger Horizons" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Hostinger Horizons</title>
-		<script type="module" crossorigin src="/assets/index-31c9937d.js"></script>
-		<link rel="stylesheet" href="/assets/index-360bfa68.css">
+		<script type="module" crossorigin src="/AI-Powered-Educational-Website/assets/index-31c9937d.js"></script>
+		<link rel="stylesheet" href="/AI-Powered-Educational-Website/assets/index-360bfa68.css">
 		<script type="module">
 window.onerror = (message, source, lineno, colno, errorObj) => {
 	const errorDetails = errorObj ? JSON.stringify({
@@ -103,7 +103,6 @@ const originalFetch = window.fetch;
 window.fetch = function(...args) {
 	const url = args[0] instanceof Request ? args[0].url : args[0];
 
-	// Skip WebSocket URLs
 	if (url.startsWith('ws:') || url.startsWith('wss:')) {
 		return originalFetch.apply(this, args);
 	}
@@ -111,26 +110,23 @@ window.fetch = function(...args) {
 	return originalFetch.apply(this, args)
 		.then(async response => {
 			const contentType = response.headers.get('Content-Type') || '';
-
-			// Exclude HTML document responses
 			const isDocumentResponse =
 				contentType.includes('text/html') ||
 				contentType.includes('application/xhtml+xml');
 
 			if (!response.ok && !isDocumentResponse) {
-					const responseClone = response.clone();
-					const errorFromRes = await responseClone.text();
-					const requestUrl = response.url;
-					console.error(`Fetch error from ${requestUrl}: ${errorFromRes}`);
+				const responseClone = response.clone();
+				const errorFromRes = await responseClone.text();
+				const requestUrl = response.url;
+				console.error(`Fetch error from ${requestUrl}: ${errorFromRes}`);
 			}
 
 			return response;
 		})
 		.catch(error => {
-			if (!url.match(/.html?$/i)) {
+			if (!url.match(/\.html?$/i)) {
 				console.error(error);
 			}
-
 			throw error;
 		});
 };
